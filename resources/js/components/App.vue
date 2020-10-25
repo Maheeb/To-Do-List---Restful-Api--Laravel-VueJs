@@ -48,7 +48,7 @@
         },
         created(){
             this.getTasks();
-            this.store();
+            // this.store();
         },
         methods: {
 
@@ -65,8 +65,11 @@
 
             },
             store(){
+                window.axios.post('/api/tasks',this.task).then(savedData=>{
 
-                console.log(this.task.priority)
+                    this.tasks.push(savedData.data);
+                })
+
             }
 
 

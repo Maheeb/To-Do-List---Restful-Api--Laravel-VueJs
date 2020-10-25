@@ -1956,8 +1956,7 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
-    this.getTasks();
-    this.store();
+    this.getTasks(); // this.store();
   },
   methods: {
     getTasks: function getTasks() {
@@ -1971,7 +1970,11 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     store: function store() {
-      console.log(this.task.priority);
+      var _this2 = this;
+
+      window.axios.post('/api/tasks', this.task).then(function (savedData) {
+        _this2.tasks.push(savedData.data);
+      });
     }
   },
   components: {
