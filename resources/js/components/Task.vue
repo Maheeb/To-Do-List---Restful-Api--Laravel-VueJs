@@ -1,7 +1,12 @@
 <template>
-    <div class="task-component">
-        <p>TASK</p>
-    </div>
+
+        <tr>
+            <td>Alfreds Futterkiste</td>
+            <td>Maria Anders</td>
+            <td>Germany</td>
+        </tr>
+
+
 </template>
 
 <script>
