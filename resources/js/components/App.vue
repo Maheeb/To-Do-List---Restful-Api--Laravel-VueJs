@@ -13,16 +13,16 @@
             <tbody>
             <task-component v-for="task in tasks" :key="task.id" :task="task"></task-component>
             <tr>
-                <td><input type="text" id="task" class="form-control"></td>
+                <td><input type="text"  v-model="task.title" id="task" class="form-control"></td>
                 <td>
-                    <select name="" id="select" class="form-control">
-                        <option value="">Low</option>
-                        <option value="">Medium</option>
-                        <option value="">High</option>
+                    <select v-model='task.priority' name="" id="select" class="form-control">
+                        <option >Low</option>
+                        <option >Medium</option>
+                        <option >High</option>
                     </select>
                 </td>
                 <td>
-                    <button class="btn btn-primary">Add</button>
+                    <button  @click="store" class="btn btn-primary">Add</button>
                 </td>
             </tr>
             </tbody>
@@ -41,23 +41,16 @@
             return {
 
                 tasks: [],
+                task: {title:'', priority:''},
 
                 message: "Hello from Maheeb..."
             }
         },
         created(){
             this.getTasks();
+            this.store();
         },
         methods: {
-            // getTasks() {
-            //     window.axios.get('/api/tasks').then(({data})=>{
-            //         data.forEach(task=>{
-            //             this.tasks.push(task);
-            //         });
-            //
-            //         }
-            //     )
-            // },
 
             getTasks(){
                 window.axios.get('/api/tasks').then(({data})=>{
@@ -70,6 +63,10 @@
 
                 })
 
+            },
+            store(){
+
+                console.log(this.task.priority)
             }
 
 
