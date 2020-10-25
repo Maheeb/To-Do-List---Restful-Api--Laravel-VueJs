@@ -11,18 +11,18 @@
             </tr>
             </thead>
             <tbody>
-            <task-component v-for="task in tasks" :key="task.id" :task="task"></task-component>
+            <task-component v-for="task in tasks" :key="task.id" :task="task" @delete="remove"></task-component>
             <tr>
-                <td><input type="text"  v-model="task.title" id="task" class="form-control"></td>
+                <td><input type="text" v-model="task.title" id="task" class="form-control"></td>
                 <td>
                     <select v-model='task.priority' name="" id="select" class="form-control">
-                        <option >Low</option>
-                        <option >Medium</option>
-                        <option >High</option>
+                        <option>Low</option>
+                        <option>Medium</option>
+                        <option>High</option>
                     </select>
                 </td>
                 <td>
-                    <button  @click="store" class="btn btn-primary">Add</button>
+                    <button @click="store" class="btn btn-primary">Add</button>
                 </td>
             </tr>
             </tbody>
@@ -41,21 +41,21 @@
             return {
 
                 tasks: [],
-                task: {title:'', priority:''},
+                task: {title: '', priority: ''},
 
                 message: "Hello from Maheeb..."
             }
         },
-        created(){
+        created() {
             this.getTasks();
             // this.store();
         },
         methods: {
 
-            getTasks(){
-                window.axios.get('/api/tasks').then(({data})=>{
+            getTasks() {
+                window.axios.get('/api/tasks').then(({data}) => {
 
-                    data.forEach(task=>{
+                    data.forEach(task => {
 
                         this.tasks.push(task);
                     })
@@ -64,11 +64,37 @@
                 })
 
             },
-            store(){
-                window.axios.post('/api/tasks',this.task).then(savedData=>{
+            store() {
+                if(this.checkInputs()) {
+                    window.axios.post('/api/tasks', this.task).then(savedData => {
 
-                    this.tasks.push(savedData.data);
-                })
+                        this.tasks.push(savedData.data);
+                        this.task.title = '';
+                    })
+                }
+
+            },
+            checkInputs(){
+
+                if(this.task.title && this.task.priority)
+                    return true;
+
+
+            },
+
+
+
+            remove(id) {
+                // console.log('The id is: '+ id);
+
+                window.axios.delete(`/api/tasks/${id}`).then(() => {
+
+                    let index = this.tasks.findIndex(task => task.id === id);
+
+                    this.tasks.splice(index, 1);
+
+                });
+
 
             }
 
